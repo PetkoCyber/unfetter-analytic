@@ -11,7 +11,6 @@ Clause 252.227-7014 (FEB 2012)
 Copyright 2016 The MITRE Corporation. All Rights Reserved.
 '''
 import re
-from BaseCARAnalytic import BaseCARAnalytic
 
 '''
 CAR-2014-11-002: Outlier Parents of Cmd
@@ -24,27 +23,35 @@ CAR_DESCRIPTION = "Many programs create command prompts as part of their normal 
     "spawning cmd.exe by looking for programs that do not normally create cmd.exe."
 ATTACK_TACTIC = "Execution"
 CAR_URL = "https://car-internal.mitre.org/wiki/CAR-2014-11-002"
+ALERT_INDEX = "sitaware"
+ES_INDEX = "sysmon-*"
+ES_TYPE = "sysmon_process"
+
+class CAR_2014_11_002():
+    def __init__(self):
+
+        self.car_data = dict(car_name=CAR_NAME,
+                             car_number=CAR_NUMBER,
+                             car_description=CAR_DESCRIPTION,
+                             car_url=CAR_URL,
+                             alert_index=ALERT_INDEX,
+                             alert_type=CAR_NUMBER,
+                             es_type=ES_TYPE,
+                             es_index=ES_INDEX)
+
+    def analyze(self, rdd, begin_timestamp, end_timestamp):
 
 
-class CAR_2014_11_002(BaseCARAnalytic):
-    car_number = CAR_NUMBER
-    es_index = "sysmon-*"
-    es_type = "sysmon_process"
+        end = end_timestamp.strftime("%Y-%m-%dT%H:%M:%SZ")
+        begin = begin_timestamp.strftime("%Y-%m-%dT%H:%M:%SZ")
+        rdd = rdd.filter(lambda item: (item[1]["@timestamp"] <= end))
+        rdd = rdd.filter(lambda item: (item[1]["@timestamp"] >= begin))
 
-    def analyze(self):
-
-        # TODO take in a parameter for the baseline (typically 30 days) and the new period (typically 1 day)
-
-        end = self.end_timestamp.strftime("%Y-%m-%dT%H:%M:%SZ")
-        begin = self.begin_timestamp.strftime("%Y-%m-%dT%H:%M:%SZ")
-        self.rdd = self.rdd.filter(lambda item: (item[1]["@timestamp"] <= end))
-        self.rdd = self.rdd.filter(lambda item: (item[1]["@timestamp"] >= begin))
-
-        self.rdd = self.rdd.filter(lambda item: (item[1]['data_model']['action'] == "create"))
+        rdd = rdd.filter(lambda item: (item[1]['data_model']['action'] == "create"))
 
         # Map in the CAR information and rename fields the analytic needs for ease of use
         # This needs to happen after the filter on process create, or some of the fields won't be there
-        self.rdd = self.rdd.map(lambda item: (
+        rdd = rdd.map(lambda item: (
             item[0],
             {'@timestamp': item[1]["@timestamp"],
              'car_id': CAR_NUMBER,
@@ -58,11 +65,8 @@ class CAR_2014_11_002(BaseCARAnalytic):
              'data_model': item[1]["data_model"]
              }))
 
-        print self.rdd.collect()
+        rdd = rdd.filter(lambda item: (item[1]['exe'] == "cmd.exe"))
+               
+            
 
-        self.rdd = self.rdd.filter(lambda item: (item[1]['exe'] == "cmd.exe"))
-
-        #TODO create a new RDD for the baseline and the new period. Identify new parents of cmd.exe and the number of hosts they've been seen on.
-        
-
-        return
+        return rdd
