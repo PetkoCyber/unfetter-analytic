@@ -14,7 +14,7 @@ Copyright 2016 The MITRE Corporation. All Rights Reserved.
 import re
 from datetime import datetime
 from datetime import timedelta
-from BaseCARAnalytic import BaseCARAnalytic
+
 
 
 '''
@@ -29,24 +29,34 @@ CAR_DESCRIPTION = "Certain commands are frequently used by malicious actors "\
     "malicious user was on the system by also get an idea of what it was "\
     "they were doing"
 ATTACK_TACTIC = "Discovery, Credential Access, Lateral Movement, Persistence, Privilege Escalation, Defense Evasion, Execution"
+ALERT_INDEX = "sitaware"
 CAR_URL = "https://car.mitre.org/wiki/CAR-2013-04-002"
+ES_INDEX = "sysmon-*"
+ES_TYPE = "sysmon_process"
 
 
-class CAR_2013_04_002(BaseCARAnalytic):
-    car_number = CAR_NUMBER
-    es_index = "sysmon-*"
-    es_type = "sysmon_process"
+class CAR_2013_04_002():
 
+    def __init__(self):
 
-    def analyze(self):
-        end = self.end_timestamp.strftime("%Y-%m-%dT%H:%M.%SZ")
-        begin = self.begin_timestamp.strftime("%Y-%m-%dT%H:%M.%SZ")
+        self.car_data = dict(car_name=CAR_NAME,
+                             car_number=CAR_NUMBER,
+                             car_description=CAR_DESCRIPTION,
+                             car_url=CAR_URL,
+                             alert_index=ALERT_INDEX,
+                             alert_type=CAR_NUMBER,
+                             es_type=ES_TYPE,
+                             es_index=ES_INDEX)
 
-        self.rdd = self.rdd.filter(lambda item: (item[1]['data_model']['action'] == "create"))
+    def analyze(self, rdd, begin_timestamp, end_timestamp):
+        end = end_timestamp.strftime("%Y-%m-%dT%H:%M.%SZ")
+        begin = begin_timestamp.strftime("%Y-%m-%dT%H:%M.%SZ")
+
+        rdd = rdd.filter(lambda item: (item[1]['data_model']['action'] == "create"))
 
         # Map in the CAR information and rename fields the analytic needs for ease of use
         # This needs to happen after the filter on process create, or some of the fields won't be there
-        self.rdd = self.rdd.map(lambda item: (
+        rdd = rdd.map(lambda item: (
             item[0],
             {'@timestamp': item[1]["@timestamp"],
              'event_code': item[1]["data_model"]["fields"]["event_code"],
@@ -64,8 +74,8 @@ class CAR_2013_04_002(BaseCARAnalytic):
              }))
 
         # Filter events based on begin and end time
-        self.rdd = self.rdd.filter(lambda item: (item[1]['@timestamp'] <= end))
-        self.rdd = self.rdd.filter(lambda item: (item[1]['@timestamp'] >= begin))
+        rdd = rdd.filter(lambda item: (item[1]['@timestamp'] <= end))
+        rdd = rdd.filter(lambda item: (item[1]['@timestamp'] >= begin))
 
         # Return true if the provided exe is in the list of suspicious commands, false if it is not.
         def isSuspiciousCommand(exe):
@@ -152,26 +162,23 @@ class CAR_2013_04_002(BaseCARAnalytic):
             return (grouped_event_list[0][0], converted_aggs)
 
         # Filter down to commands of interest
-        self.rdd = self.rdd.filter(lambda item: (isSuspiciousCommand(item[1]['exe'])))
+        rdd = rdd.filter(lambda item: (isSuspiciousCommand(item[1]['exe'])))
 
         # Convert RDD to (K, V) where K is (hostname, ppid) and V is (elastic key, event data)
-        self.rdd = self.rdd.map(lambda item: ((item[1]['hostname'], item[1]['ppid']), (item[0], item[1])))
+        rdd = rdd.map(lambda item: ((item[1]['hostname'], item[1]['ppid']), (item[0], item[1])))
 
-        self.rdd = self.rdd.groupByKey()
+        rdd = rdd.groupByKey()
 
         # Assume the list of suspicious commands per (hostname, ppid) is relatively small
         # Given at iterable of all the commands, sort them and do a pairwise comparison to see how many fall within our time requirement
  
-        self.rdd = self.rdd.map(lambda item: (item[0], group_suspicous_processes(item[1], 30)))
+        rdd = rdd.map(lambda item: (item[0], group_suspicous_processes(item[1], 30)))
 
-        #TODO remove debug
-        print self.rdd.collect()
-
-        # The data structure returned by group_suspicous_processes is (hostname, ppid)(elastic_id, alert_data_dict_list)
+            # The data structure returned by group_suspicous_processes is (hostname, ppid)(elastic_id, alert_data_dict_list)
         # Where alet_data_dict_list is a list of groups of suspicous commands. Each entry in the list is a dictionary.
 
         #TODO: This only uses the first element returned from group_suspicous_processes. We need to get all of them, possibly using flatMap or flatMapValues?
-        self.rdd = self.rdd.map(lambda item: (
+        rdd = rdd.map(lambda item: (
             item[1][0],
             {'@timestamp': item[1][1][0]["start_time"],
              'end_time': item[1][1][0]["end_time"], 
@@ -184,4 +191,4 @@ class CAR_2013_04_002(BaseCARAnalytic):
              'hostname': item[0][0]
              }))
 
-        return
+        return rdd

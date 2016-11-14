@@ -10,7 +10,6 @@ Clause 252.227-7014 (FEB 2012)
 
 Copyright 2016 The MITRE Corporation. All Rights Reserved.
 '''
-from BaseCARAnalytic import BaseCARAnalytic
 import itertools
 from datetime import datetime
 from datetime import timedelta
@@ -28,7 +27,7 @@ ES_INDEX = "winevent_security-*"
 ES_TYPE = "winevent_security"
 ALERT_INDEX = "sitaware"
 
-class CAR_2013_02_008(BaseCARAnalytic):
+class CAR_2013_02_008():
     def __init__(self):
 
         self.car_data = dict(car_name=CAR_NAME,
@@ -70,16 +69,14 @@ class CAR_2013_02_008(BaseCARAnalytic):
         # Filter the event codes for logon
         rdd = rdd.filter(lambda item: (item[1]['data_model']['fields']['event_code'] in [528, 4624]))
         # Filter to only the dates/duration provided
-        print len(rdd.collect())
+
         rdd = rdd.filter(lambda item: (item[1]["@timestamp"] <= end))
         rdd = rdd.filter(lambda item: (item[1]["@timestamp"] >= begin))
         # Ignore the usernames
-        print len(rdd.collect())
         rdd = rdd.filter(lambda item: (item[1]["data_model"]["fields"]["user"] not in ignore_username_list))
         print len(rdd.collect())
         # Use only Logon Types for users that log in
         rdd = rdd.filter(lambda item: (item[1]["data_model"]["fields"]["logon_type"] in include_logon_type))
-        print len(rdd.collect())
         rdd = rdd.map(lambda item: (
             item[0],
             {'hostname': item[1]["data_model"]["fields"]["hostname"],
