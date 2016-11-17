@@ -15,7 +15,7 @@ Copyright 2016 The MITRE Corporation. All Rights Reserved.
 CAR-2014-04-003: Powershell Execution
 '''
 
-CAR_NUMBER = "CAR-2014-05-002"
+CAR_NUMBER = "CAR_2014_04_003"
 CAR_NAME = "PowerShell Execution"
 CAR_DESCRIPTION = "PowerShell is a scripting environment included with Windows that is used by both attackers and administrators. " \
     "Execution of PowerShell scripts in most Windows versions is opaque and not typically secured by antivirus which makes using PowerShell " \
@@ -27,7 +27,7 @@ ES_INDEX = "sysmon-*"
 ES_TYPE = "sysmon_process"
 
 
-class CAR_2014_05_002():
+class CAR_2014_04_003():
     def __init__(self):
 
         self.car_data = dict(car_name=CAR_NAME,

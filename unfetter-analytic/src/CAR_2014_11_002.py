@@ -16,7 +16,7 @@ import re
 CAR-2014-11-002: Outlier Parents of Cmd
 '''
 
-CAR_NUMBER = "CAR-2014-11-002"
+CAR_NUMBER = "CAR_2014_11_002"
 CAR_NAME = "Outlier Parents of Cmd"
 CAR_DESCRIPTION = "Many programs create command prompts as part of their normal operation " \
     "including malware used by attackers. This analytic attempts to identify suspicious programs " \

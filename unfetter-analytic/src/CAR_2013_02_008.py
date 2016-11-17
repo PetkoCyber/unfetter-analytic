@@ -74,7 +74,6 @@ class CAR_2013_02_008():
         rdd = rdd.filter(lambda item: (item[1]["@timestamp"] >= begin))
         # Ignore the usernames
         rdd = rdd.filter(lambda item: (item[1]["data_model"]["fields"]["user"] not in ignore_username_list))
-        print len(rdd.collect())
         # Use only Logon Types for users that log in
         rdd = rdd.filter(lambda item: (item[1]["data_model"]["fields"]["logon_type"] in include_logon_type))
         rdd = rdd.map(lambda item: (

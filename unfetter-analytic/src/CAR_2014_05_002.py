@@ -15,7 +15,7 @@ Copyright 2016 The MITRE Corporation. All Rights Reserved.
 CAR-2014-05-002: Services launching Cmd
 '''
 
-CAR_NUMBER = "CAR-2014-05-002"
+CAR_NUMBER = "CAR_2014_05_002"
 CAR_NAME = "Services launching Cmd"
 CAR_DESCRIPTION = "Windows runs the Service Control Manager (SCM) within the process services.exe. Windows launches services as independent " \
     "processes or DLL loads within a svchost.exe group. To be a legitimate service, a process (or DLL) must have the appropriate service entry " \
