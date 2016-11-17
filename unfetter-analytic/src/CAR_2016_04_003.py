@@ -20,7 +20,7 @@ CAR_NUMBER = "CAR_2016_04_003"
 CAR_NAME = "User Activity from Stopping Windows Defensive Services"
 CAR_DESCRIPTION = "Spyware and malware remain a serious problem and Microsoft developed security services, Windows Defender and Windows Firewall, " \
     "to combat this threat. In the event Windows Defender or Windows Firewall is turned off, administrators should correct the issue immediately " \
-    "to prevent the possibility of infection or further infection and investigate to determine if caused by crash or user manipulation. " \
+    "to prevent the possibility of infection or further infection and investigate to determine if caused by crash or user manipulation. " 
 ATTACK_TACTIC = "Defense Evasion"
 CAR_URL = "https://car.mitre.org/wiki/CAR-2016-04-003"
 ES_INDEX = "winevent_system-*"
