@@ -15,7 +15,7 @@ Copyright 2016 The MITRE Corporation. All Rights Reserved.
 CAR_2013_10_002: DLL injection via Load Library.
 '''
 
-CAR_NUMBER = "CAR-2013-10-002"
+CAR_NUMBER = "CAR_2013_10_002"
 CAR_NAME = "DLL Injection via Load Library"
 CAR_DESCRIPTION = "Microsoft Windows allows for processes to remotely create threads within other processes of the same privilege level. " \
     "This functionality is provided via the Windows API CreateRemoteThread. Both Windows and third-party software use this ability for " \

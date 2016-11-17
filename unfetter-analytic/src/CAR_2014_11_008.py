@@ -15,7 +15,7 @@ Copyright 2016 The MITRE Corporation. All Rights Reserved.
 CAR-2014-11-008: Command Launched from WinLogon.
 '''
 
-CAR_NUMBER = "CAR-2014-11-008"
+CAR_NUMBER = "CAR_2014_11_008"
 CAR_NAME = "Command Launched from WinLogon"
 CAR_DESCRIPTION = "An adversary can use accessibility features (Ease of Access), such as StickyKeys or Utilman, to launch a command shell from the logon screen and gain SYSTEM access."
 ATTACK_TACTIC = "Execution, Persistence, Privilege Escalation"

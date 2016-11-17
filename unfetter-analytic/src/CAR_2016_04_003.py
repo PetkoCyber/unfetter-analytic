@@ -42,7 +42,6 @@ class CAR_2016_04_003():
                              es_index=ES_INDEX)
 
     def analyze(self, rdd, begin_timestamp, end_timestamp):
-        print "analyzing"
         end = end_timestamp.strftime("%Y-%m-%dT%H:%M:%SZ")
         begin = begin_timestamp.strftime("%Y-%m-%dT%H:%M:%SZ")
         rdd = rdd.filter(lambda item: (item[1]['data_model']['fields']['event_code'] == 7036))

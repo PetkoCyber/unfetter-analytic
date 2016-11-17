@@ -15,7 +15,7 @@ Copyright 2016 The MITRE Corporation. All Rights Reserved.
 CAR-2014-11-004: Remote PowerShell Sessions
 '''
 
-CAR_NUMBER = "CAR-2014-11-004"
+CAR_NUMBER = "CAR_2014_11_004"
 CAR_NAME = "Remote PowerShell Sessions"
 CAR_DESCRIPTION = "According to ATT&CK, PowerShell can be used over WinRM to remotely run commands on a host. When a remote PowerShell session starts, svchost.exe executes wsmprovhost.exe"
 ATTACK_TACTIC = "Execution, Lateral Movement"

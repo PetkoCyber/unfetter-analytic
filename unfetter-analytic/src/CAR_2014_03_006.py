@@ -15,10 +15,10 @@ Copyright 2016 The MITRE Corporation. All Rights Reserved.
 CAR-2014-03-006: Detecting DLL execution via rundll32.exe.
 '''
 
-CAR_NUMBER = "CAR-2014-03-006"
+CAR_NUMBER = "CAR_2014_03_006"
 CAR_NAME = "RunDLL32.exe monitoring"
 CAR_DESCRIPTION = "Adversaries may find it necessary to use Dyanamic-link Libraries (DLLs) to evade defenses. " \
-    "One way these DLLs can be "executed" is through the use of the built-in Windows utility RunDLL32, which allows " \
+    "One way these DLLs can be executed is through the use of the built-in Windows utility RunDLL32, which allows " \
     "a user to execute code in a DLL, providing the name and optional arguments to an exported entry point."
 ATTACK_TACTIC = "Defense Evasion"
 CAR_URL = "https://car.mitre.org/wiki/CAR-2014-03-006"

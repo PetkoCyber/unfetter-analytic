@@ -16,7 +16,7 @@ import re
 CAR-2013-05-002: Suspicious Run Locations.
 '''
 
-CAR_NUMBER = "CAR-2013-05-002"
+CAR_NUMBER = "CAR_2013_05_002"
 CAR_NAME = "Suspicious Run Locations"
 CAR_DESCRIPTION = "In Windows, files should never execute out of certain "\
     "directory locations. Any of these, locations may exist for a variety "\
