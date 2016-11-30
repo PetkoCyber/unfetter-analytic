@@ -112,7 +112,8 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-
+# Need to move python to a better directory than /tmp
+export PATH=$PATH:/tmp/Python-2.7.12
 export SPARK_HOME=/usr/local/spark
 export PATH=$PATH:$SPARK_HOME/bin
 export PS1="\w\\$> \[$(tput sgr0)\]"

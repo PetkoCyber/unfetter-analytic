@@ -1,0 +1,16 @@
+{
+  "name": "unfetter-discover-processor",
+  "version": "0.2.2",
+  "description": "Records Processor for Unfetter Discover",
+  "private": true,
+  "directories": {
+    "doc": "doc",
+    "test": "tests"
+  },
+  "author": "Unfetter",
+  "license": "MIT",
+  "dependencies": {
+
+    "jsonapi-serializer": "*"
+  }
+}

@@ -29,3 +29,5 @@ if [ $? -ne 0 ] ; then
 else
     echo Elasticsearch head plugin installed. Skipping.
 fi
+
+/docker-entrypoint.sh elasticsearch
