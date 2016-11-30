@@ -22,7 +22,7 @@ CAR_DESCRIPTION = "Many programs create command prompts as part of their normal 
     "including malware used by attackers. This analytic attempts to identify suspicious programs " \
     "spawning cmd.exe by looking for programs that do not normally create cmd.exe."
 ATTACK_TACTIC = "Execution"
-CAR_URL = "https://car-internal.mitre.org/wiki/CAR-2014-11-002"
+CAR_URL = "https://car.mitre.org/wiki/CAR-2014-11-002"
 ALERT_INDEX = "sitaware"
 ES_INDEX = "sysmon-*"
 ES_TYPE = "sysmon_process"
