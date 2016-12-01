@@ -26,7 +26,7 @@ def http_put(url, data):
 if __name__ == '__main__':
     # All the dashboards (assuming we have less than 9999) from
     # kibana, ignoring those with _type: temp.
-    f = open("/vagrant/resources/kibana_dashboard.json", "r")
+    f = open("kibana_dashboard.json", "r")
     jsonString = f.read()
     old_dashboards_raw = json.loads(jsonString)
     for doc in old_dashboards_raw['hits']['hits']:

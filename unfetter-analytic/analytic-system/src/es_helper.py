@@ -13,7 +13,7 @@ Clause 252.227-7014 (FEB 2012)
 from pyspark import SparkContext, SparkConf
 import json
 
-ES_IP = "localhost"
+ES_IP = "elasticsearch"
 ES_PORT = "9200"
 
 
