@@ -25,7 +25,7 @@ CAR_URL = "https://car.mitre.org/wiki/CAR-2014-03-006"
 ALERT_INDEX = "sitaware"
 ES_INDEX = "sysmon-*"
 ES_TYPE = "sysmon_process"
-
+INDICATOR_ID = "indicator--7e34ebee-8014-4e1a-a3a8-639f5afb3e61"
 
 class CAR_2014_03_006():
     def __init__(self):
@@ -37,7 +37,7 @@ class CAR_2014_03_006():
                              alert_index=ALERT_INDEX,
                              alert_type=CAR_NUMBER,
                              es_type=ES_TYPE,
-                             es_index=ES_INDEX)
+                             indicator_id=INDICATOR_ID, es_index=ES_INDEX)
 
     def analyze(self, rdd, begin_timestamp, end_timestamp):
         rdd = rdd.filter(lambda item: (item[1]["@timestamp"] <= end_timestamp.strftime("%Y-%m-%dT%H:%M:%SZ")))

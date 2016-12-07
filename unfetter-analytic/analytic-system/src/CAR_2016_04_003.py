@@ -26,6 +26,7 @@ CAR_URL = "https://car.mitre.org/wiki/CAR-2016-04-003"
 ES_INDEX = "winevent_system-*"
 ES_TYPE = "winevent_system"
 ALERT_INDEX = "alert"
+INDICATOR_ID = "indicator--23977a6f-b9b6-44a7-84f3-40add71e1b75"
 # Windows Security event 5025
 
 
@@ -39,7 +40,7 @@ class CAR_2016_04_003():
                              alert_index=ALERT_INDEX,
                              alert_type=CAR_NUMBER,
                              es_type=ES_TYPE,
-                             es_index=ES_INDEX)
+                             indicator_id=INDICATOR_ID, es_index=ES_INDEX)
 
     def analyze(self, rdd, begin_timestamp, end_timestamp):
         end = end_timestamp.strftime("%Y-%m-%dT%H:%M:%SZ")

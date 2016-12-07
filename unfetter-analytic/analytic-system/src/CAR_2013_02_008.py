@@ -25,6 +25,7 @@ ATTACK_TACTIC = "Lateral Movement"
 CAR_URL = "https://car.mitre.org/wiki/CAR-2013-02-008"
 ES_INDEX = "winevent_security-*"
 ES_TYPE = "winevent_security"
+INDICATOR_ID = "indicator--a98a7044-b118-464e-b8a6-f18e97591ab0"
 ALERT_INDEX = "sitaware"
 
 class CAR_2013_02_008():
@@ -37,7 +38,7 @@ class CAR_2013_02_008():
                              alert_index=ALERT_INDEX,
                              alert_type=CAR_NUMBER,
                              es_type=ES_TYPE,
-                             es_index=ES_INDEX)
+                             indicator_id=INDICATOR_ID, es_index=ES_INDEX)
 
     # Some logon activity is part of the normal operation of the operating system.
     # We remove the noise to try and identify legitmate users logons.

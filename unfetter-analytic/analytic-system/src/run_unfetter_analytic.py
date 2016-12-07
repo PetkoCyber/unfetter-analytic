@@ -18,6 +18,9 @@ import es_helper
 import re
 import pdb
 import sys
+import requests
+import json
+import logging
 
 """This is the main user interface to the CAR analytics code.  This python program will start, accept and validate
 arguments, and create the desired CAR analytic class, and will call the class's analytics."""
@@ -28,6 +31,7 @@ DURATION_HELP = 'How much time to analyze.'
 END_HELP = "UTC last date/time to analyze.  Default is Now"
 TEST_HELP = "Include if you do not want to write the alert to ElasticSearch"
 BEGIN_HELP = "UTC beginning date/time to analyze"
+POST_HELP = "Posts the alert from an analytic to the local Unfetter-Discover system"
 
 
 # TODO
@@ -133,13 +137,30 @@ def printHeader():
     print b_w + " " * (len(analytic[1]) + len(bulb[1])) + o + "\n\n"
 
 
+def postSTIXStore(car_data):
+    now = datetime.datetime.utcnow()
+    sighting = {'data':{'type':'sightings',
+                        'attributes':{
+                            'created':now.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                            'version':'1',
+                            'modified':now.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                            'summary':car_data['car_name'],
+                            'sighting_of_ref':car_data['indicator_id']
+                        }}}
+
+    url = 'http://cti-stix-store:3000/cti-stix-store-api/sightings'
+    headers = {'Accept' : 'application/vnd.api+json',
+               'Content-Type' : 'application/vnd.api+json'}
+    response = requests.post(url, headers=headers, data=json.dumps(sighting))
+    if response.status_code >= 400:
+        print "Error posting to Unfetter-Discover: Code %s" %response.status_code
+
 def printCARHeader(car_data):
     print "\033[0;97m%s\033[0m\n" %car_data["car_name"]
     print "CAR Number: %s\n\n" %car_data["car_number"]
     print car_data["car_description"]
     print "\n\n"
     return
-
 
 def buildArgument():
     now = datetime.datetime.utcnow()
@@ -153,6 +174,8 @@ def buildArgument():
                         dest='duration', action=valid_duration,
                         default=['min', 60], nargs=2)
     parser.add_argument('-t', help=TEST_HELP, dest='test',
+                        action='store_const', const=True, default=False)
+    parser.add_argument('-p', help=POST_HELP, dest='post_stix',
                         action='store_const', const=True, default=False)
 
     args = parser.parse_args()
@@ -187,5 +210,7 @@ if __name__ == '__main__':
     rdd = analytic.analyze(rdd, args.begin, args.end)
     if args.test is False:
         es_helper.alert(rdd, analytic.car_data["alert_index"], analytic.car_data["car_number"])
+        if args.post_stix:
+            postSTIXStore(analytic.car_data)
     else:
         es_helper.printAlert(rdd)

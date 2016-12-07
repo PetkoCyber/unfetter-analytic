@@ -24,7 +24,7 @@ CAR_URL = "https://car-.mitre.org/wiki/CAR-2016-04-004"
 ES_INDEX = "winevent_security*"
 ES_TYPE = "winevent_security"
 ALERT_INDEX = "sitaware"
-
+INDICATOR_ID = "indicator--7522721a-b267-4b21-ad38-910044ce4720"
 class CAR_2016_04_004():
 
     def __init__(self):
@@ -35,7 +35,7 @@ class CAR_2016_04_004():
                              alert_index=ALERT_INDEX,
                              alert_type=CAR_NUMBER,
                              es_type=ES_TYPE,
-                             es_index=ES_INDEX)
+                             indicator_id=INDICATOR_ID, es_index=ES_INDEX)
 
     def analyze(self, rdd, begin_timestamp, end_timestamp):
         end = end_timestamp.strftime("%Y-%m-%dT%H:%M:%SZ")

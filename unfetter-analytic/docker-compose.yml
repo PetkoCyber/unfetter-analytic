@@ -52,7 +52,9 @@ services:
     container_name: analytic-system
     links:
      - elasticsearch:elasticsearch
-
+     - cti-stix-store:cti-stix-store
+    volumes:
+     - "./analytic-system/src:/usr/share/unfetter/src"
 
 
   logstash:

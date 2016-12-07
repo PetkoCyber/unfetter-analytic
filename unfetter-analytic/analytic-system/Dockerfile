@@ -51,11 +51,11 @@ RUN cd Python-2.7.12 \
     && ./configure \
     && make 
 
+RUN apt-get -y install python-pip
+RUN pip install requests
 
 
-
-
-COPY /src /usr/share/unfetter/
+COPY src /usr/share/unfetter/src
 #ENTRYPOINT /usr/share/unfetter/run.sh
 # Need to figure out how to do this
 COPY .bashrc ~/.bashrc
@@ -65,5 +65,6 @@ ENV PATH $PATH:/tmp/Python-2.7.12
 ENV SPARK_HOME /usr/local/spark
 ENV PATH $PATH:$SPARK_HOME/bin
 ENV PS1 "\w\\$> \[$(tput sgr0)\]"
-WORKDIR /usr/share/unfetter
-ENTRYPOINT /usr/share/unfetter/run.sh
+WORKDIR /usr/share/unfetter/src
+
+ENTRYPOINT /usr/share/unfetter/src/run.sh

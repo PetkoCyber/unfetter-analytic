@@ -1,4 +1,3 @@
-# code: utf-8
 '''
 NOTICE
 
@@ -21,7 +20,7 @@ CAR_URL = "https://car.mitre.org/wiki/CAR-2013-03-001"
 ES_INDEX = "sysmon-*"
 ES_TYPE = "sysmon_process"
 ALERT_INDEX = "alert"
-
+INDICATOR_ID = "indicator--7f506572-63a9-4176-b008-a3da322b28bd"
 
 class CAR_2013_03_001():
     def __init__(self):
@@ -33,7 +32,7 @@ class CAR_2013_03_001():
                              alert_index=ALERT_INDEX,
                              alert_type=CAR_NUMBER,
                              es_type=ES_TYPE,
-                             es_index=ES_INDEX)
+                             indicator_id=INDICATOR_ID, es_index=ES_INDEX)
 
     def analyze(self, rdd, begin_timestamp, end_timestamp):
         end = end_timestamp.strftime("%Y-%m-%dT%H:%M:%SZ")
