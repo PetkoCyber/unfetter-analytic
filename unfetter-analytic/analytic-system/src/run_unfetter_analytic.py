@@ -154,6 +154,8 @@ def postSTIXStore(car_data):
     response = requests.post(url, headers=headers, data=json.dumps(sighting))
     if response.status_code >= 400:
         print "Error posting to Unfetter-Discover: Code %s" %response.status_code
+    else:
+        print "Alert sent to Unfetter-Discover"
 
 def printCARHeader(car_data):
     print "\033[0;97m%s\033[0m\n" %car_data["car_name"]
@@ -210,7 +212,7 @@ if __name__ == '__main__':
     rdd = analytic.analyze(rdd, args.begin, args.end)
     if args.test is False:
         es_helper.alert(rdd, analytic.car_data["alert_index"], analytic.car_data["car_number"])
-        if args.post_stix:
+        if args.post_stix and (not rdd.isEmpty()):
             postSTIXStore(analytic.car_data)
     else:
         es_helper.printAlert(rdd)

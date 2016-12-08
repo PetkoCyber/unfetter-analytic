@@ -22,7 +22,7 @@ RUN wget http://downloads.typesafe.com/scala/2.11.7/scala-2.11.7.tgz?_ga=1.20486
 ############################
 
 RUN echo  "*** Installing Spark ***"
-RUN wget http://apache.mirrors.ionfish.org/spark/spark-1.6.1/spark-1.6.1-bin-hadoop2.6.tgz -q \
+RUN wget http://archive.apache.org/dist/spark/spark-1.6.1/spark-1.6.1-bin-hadoop2.6.tgz -q \
     && tar -xf spark-1.6*.tgz \
     && mkdir /usr/local/spark \
     && mv spark-1.6*/* /usr/local/spark/
